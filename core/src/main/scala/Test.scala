@@ -1,8 +1,6 @@
 object Test {
-  type Cond[T] = T
-  type MyCheckedType[T] = Checked[Cond, T]
+  val W = shapeless.Witness
+  val check : TwoFaceInt[W.`42`.T] = TwoFaceInt(42) //uses shapeless Witness to check type
 
-  def myCheck[T](value : MyCheckedType[T]) : Unit = {} //also fails without type aliasing (value : Checked[Cond, T])
-
-  myCheck(42)
+  TwoFaceInt(1) + TwoFaceInt(2)
 }

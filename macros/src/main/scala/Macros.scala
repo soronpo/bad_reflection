@@ -1,21 +1,22 @@
 import scala.reflect.macros.whitebox.Context
 
-final class Checked[Cond[_], T](val value : Int)
-object Checked {
-  implicit def fromNumValue[Cond[_], T](value : T) : Checked[Cond, T] = macro Builder.Macro.fromNumValue[Cond, T]
+final class TwoFaceInt[T](val value : Int) {
+  def + [R](that : TwoFaceInt[R]) = ???
+}
+object TwoFaceInt {
+  def apply[T <: Int, Out <: T](value : T) : TwoFaceInt[Out] = macro Builder.Macro.fromNumValue[T]
 }
 
 object Builder {
   final class Macro(val c: Context) {
-    def fromNumValue[Cond[_], T](value : c.Tree)(
-      implicit
-      cond : c.WeakTypeTag[Cond[_]], t : c.WeakTypeTag[T]
-    ): c.Tree = {
+    def fromNumValue[T](value : c.Tree)(implicit t : c.WeakTypeTag[T]) : c.Tree = {
       import c.universe._
-      val condTpe = weakTypeOf[Cond[_]]
       val tTpe = weakTypeOf[T]
-      if (condTpe.typeArgs.isEmpty) c.abort(c.enclosingPosition, "Cond should have type arguments. Bad Reflection!")
-      q"new Checked[$condTpe, $tTpe](1)"
+      val valueTpe = value match {
+        case Literal(Constant(t : Int)) => c.internal.constantType(Constant(t))
+        case _ => tTpe
+      }
+      q"new TwoFaceInt[$valueTpe]($value)"
     }
   }
 }
