@@ -20,6 +20,7 @@ lazy val macros = (project in file("macros")).settings(
 
 lazy val core = project in file("core") dependsOn macros settings (
   scalacOptions ++= Seq(
-    "-Xprint:typer"
+    "-Xprint:typer",
+    "-Ymacro-debug-lite"
   )
 )
