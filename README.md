@@ -1,1 +1,1 @@
-This project provides an example to a bad reflection issue of higher-kinded types.
+This project provides an example to a reflection regression from Scala 2.13.0-M2(and 2.12.4) to 2.13.0-M3.
