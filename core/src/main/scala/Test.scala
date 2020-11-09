@@ -1,6 +1,5 @@
-object Test {
-//  val W = shapeless.Witness
-//  val check : TwoFaceInt[W.`42`.T] = TwoFaceInt(42) //uses shapeless Witness to check type
-
-  TwoFaceInt(1) + TwoFaceInt(2)
+object Test extends App {
+  val m = MacroLand()
+  import m.S //Try complete me here
+  import m.SomeClass //error highlighting is OK, but no completions are offered
 }
